@@ -1,0 +1,17 @@
+streamlit
+google-generativeai
+python-dotenv
+langchain
+PyPDF2
+chromadb
+faiss-cpu
+langchain-google-genai
+fastapi
+uvicorn
+pydantic
+python-multipart
+pdfplumber
+pytesseract
+Pillow
+tqdm
+PyMuPDF
