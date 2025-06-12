@@ -11,7 +11,6 @@ def extract_text_from_pdf(pdf_path):
             # OCR fallback for scanned pages
             img_path = f"{pdf_path}_page_{i}.png"
             try:
-                # Use PyMuPDF for image extraction from page
                 import fitz
                 doc = fitz.open(pdf_path)
                 pix = doc[i].get_pixmap()

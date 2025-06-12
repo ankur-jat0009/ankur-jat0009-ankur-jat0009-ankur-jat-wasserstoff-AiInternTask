@@ -1,6 +1,5 @@
 import streamlit as st
 import requests
-import pandas as pd
 
 BACKEND_URL = "http://localhost:8000"
 
@@ -12,82 +11,118 @@ st.markdown(
     .stChatMessage {background-color: #23272f; border-radius: 10px; padding: 16px; margin-bottom: 10px;}
     .stChatUser {background-color: #1a1d23; border-radius: 10px; padding: 16px; margin-bottom: 10px;}
     .stUploadIcon {font-size: 40px; color: #4F8BF9; margin-bottom: 10px;}
+    textarea {min-height: 40px !important;}
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-st.title("🤖 Document Chatbot with Theme Identification")
+st.markdown("<h1 style='text-align: center;'>🤖FileBot🤖</h1>", unsafe_allow_html=True)
 
-st.header("Upload Documents")
-st.markdown('<div class="stUploadIcon">📄</div>', unsafe_allow_html=True)
-uploaded_files = st.file_uploader(
-    "Upload PDFs or images",
-    accept_multiple_files=True,
-    type=["pdf", "png", "jpg", "jpeg"],
-    label_visibility="collapsed"
-)
-if uploaded_files:
-    if st.button("⬆️ Upload to Backend"):
-        for idx, file in enumerate(uploaded_files, 1):
-            files = {"file": (file.name, file.getvalue(), file.type)}
-            resp = requests.post(f"{BACKEND_URL}/upload/", files=files)
-            st.success(f"Document {idx}: {file.name} uploaded ({resp.json().get('chunks', 0)} chunks)")
-
-st.divider()
-
-st.header("Chat with your Documents")
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+if "file_uploader_key" not in st.session_state:
+    st.session_state.file_uploader_key = 0
 
-def render_chat():
-    for entry in st.session_state.chat_history:
-        if entry["role"] == "user":
-            st.markdown(f'<div class="stChatUser"><b>You:</b> {entry["content"]}</div>', unsafe_allow_html=True)
+st.sidebar.header("Session Controls")
+if st.sidebar.button("Start New Chat"):
+    try:
+        resp = requests.post(f"{BACKEND_URL}/reset_backend/")
+        if resp.status_code == 200:
+            st.success("Backend reset successfully!")
         else:
-            st.markdown(f'<div class="stChatMessage"><b>Bot:</b> {entry["content"]}</div>', unsafe_allow_html=True)
+            st.error("Failed to reset backend.")
+    except Exception as e:
+        st.error(f"Error resetting backend: {e}")
+    st.session_state.chat_history = []
+    st.session_state.file_uploader_key += 1
+    st.rerun()
 
-render_chat()
+# --- Unified Upload Box ---
+st.header("Upload Documents or Enter Text")
+
+with st.form("upload_form", clear_on_submit=True):
+    uploaded_files = st.file_uploader(
+        "Upload PDFs or images (PDF, PNG, JPG, JPEG)", 
+        accept_multiple_files=True, 
+        type=["pdf", "png", "jpg", "jpeg"],
+        key=st.session_state.file_uploader_key
+    )
+    user_text = st.text_area("Or paste your text here to upload as a document.", height=150)
+    upload_submit = st.form_submit_button("Upload")
+
+if upload_submit:
+    # Handle file uploads
+    if uploaded_files:
+        for idx, file in enumerate(uploaded_files, 1):
+            files = {"file": (file.name, file.getvalue(), file.type)}
+            try:
+                resp = requests.post(f"{BACKEND_URL}/upload/", files=files)
+                resp.raise_for_status()
+                if resp.text.strip():
+                    result = resp.json()
+                    doc_id = result.get("doc_id", f"DOC{idx}")
+                    st.success(f"✅ Document {idx}: {file.name} uploaded as {doc_id}")
+                else:
+                    st.error(f"❌ Document {file.name} uploaded but got empty response.")
+            except requests.exceptions.RequestException as e:
+                st.error(f"❌ Failed to upload {file.name}: {e}")
+            except ValueError:
+                st.error(f"❌ Invalid JSON response for {file.name}: {resp.text}")
+
+    # Handle direct text upload
+    if user_text.strip():
+        resp = requests.post(f"{BACKEND_URL}/upload_text/", json={"text": user_text})
+        if resp.status_code == 200:
+            st.success("Text uploaded successfully!")
+        else:
+            st.error("Failed to upload text.")
+
+st.divider()
+st.header("💬 Chat with your Documents")
+
+# Chat rendering
+for entry in st.session_state.chat_history:
+    if entry["role"] == "user":
+        st.markdown(f'<div class="stChatUser"><b>You:</b> {entry["content"]}</div>', unsafe_allow_html=True)
+    else:
+        st.markdown(f'<div class="stChatMessage"><b>Bot:</b> {entry["content"]}</div>', unsafe_allow_html=True)
+
+def auto_expand_text_area(label, key, placeholder):
+    return st.text_area(
+        label,
+        key=key,
+        placeholder=placeholder,
+        height=68,
+        help="Type your question here"
+    )
 
 with st.form(key="query_form", clear_on_submit=True):
-    question = st.text_input(
+    question = auto_expand_text_area(
         "Ask a question about your documents",
         key="question_input",
-        placeholder="Type your question and press Enter..."
+        placeholder="Type your question (multi-line supported)..."
     )
     submit = st.form_submit_button("Send")
 
 if submit and question:
     st.session_state.chat_history.append({"role": "user", "content": question})
-    # Prepare chat history for backend (exclude current question)
-    history = [
-        {"role": entry["role"], "content": entry["content"]}
-        for entry in st.session_state.chat_history[:-1]
-    ]
-    with st.spinner("Thinking..."):
-        resp = requests.post(
-            f"{BACKEND_URL}/query/",
-            json={"question": question, "history": history}
-        )
-        data = resp.json()
-        # ChatGPT-style answer formatting
-        if "answer" in data:
-            answer = data["answer"]
-            st.session_state.chat_history.append({"role": "bot", "content": answer})
-        elif "answers" in data and isinstance(data["answers"], list) and len(data["answers"]) > 0:
-            answer_lines = []
-            for idx, ans in enumerate(data["answers"], 1):
-                doc_id = f"Document {idx}"
-                page_info = ans.get("citation", "")
-                answer_lines.append(f"**{doc_id}** (at {page_info}):\n{ans['answer']}")
-            answer = "\n\n".join(answer_lines)
-            st.session_state.chat_history.append({"role": "bot", "content": answer})
-        elif "themes" in data and isinstance(data["themes"], list) and len(data["themes"]) > 0:
-            answer_lines = []
-            for theme in data["themes"]:
-                answer_lines.append(f"**Theme – {theme['theme']}:**\n{theme['summary']}")
-            answer = "\n\n".join(answer_lines)
-            st.session_state.chat_history.append({"role": "bot", "content": answer})
-        else:
-            st.session_state.chat_history.append({"role": "bot", "content": "Sorry, I couldn't find an answer."})
-    render_chat()
+    history = st.session_state.chat_history[:-1]
+    with st.spinner("🤔 Thinking..."):
+        try:
+            resp = requests.post(
+                f"{BACKEND_URL}/query/",
+                json={"question": question, "history": history}
+            )
+            resp.raise_for_status()
+            if resp.text.strip():
+                data = resp.json()
+                answer = data.get("answer", "❌ No answer returned.")
+                st.session_state.chat_history.append({"role": "bot", "content": answer})
+            else:
+                st.session_state.chat_history.append({"role": "bot", "content": "❌ Got empty response from backend."})
+        except requests.exceptions.RequestException as e:
+            st.session_state.chat_history.append({"role": "bot", "content": f"❌ Error: {e}"})
+        except ValueError:
+            st.session_state.chat_history.append({"role": "bot", "content": f"❌ Invalid JSON response: {resp.text}"})
+    st.rerun()
