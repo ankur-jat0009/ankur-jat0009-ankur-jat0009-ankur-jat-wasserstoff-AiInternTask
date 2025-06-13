@@ -5,7 +5,7 @@ python-dotenv
 langchain
 PyPDF2
 pdfplumber
-PyMuPDF
+PyMuPDF>=1.22.0
 faiss-cpu
 fastapi
 uvicorn
