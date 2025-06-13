@@ -14,7 +14,7 @@ langchain                      # Orchestrates chains, prompts, models
 # PDF reading
 PyPDF2                         # Basic PDF parser
 pdfplumber                     # Optional high-quality PDF text extraction
-PyMuPDF                        # Used for rendering pages for OCR/image extraction
+                       # Used for rendering pages for OCR/image extraction
 
 # Vector DBs and Embedding
 faiss-cpu                      # Local vector index for semantic search                       # Optional (not used here unless planning RAG+db)
@@ -27,11 +27,12 @@ uvicorn                        # ASGI server for running FastAPI
 pydantic                       # Schema validation for FastAPI routes
 python-multipart               # Supports file uploads in FastAPI
 
-# OCR utilities
-pytesseract                    # Tesseract OCR (optional if not using PaddleOCR)
+                  # Tesseract OCR (optional if not using PaddleOCR)
 Pillow                         # Image file processing library
 
 # Progress bar
 tqdm                           # For any progress display in loops (optional)
 paddleocr
 paddlepaddle
+
+setuptools
