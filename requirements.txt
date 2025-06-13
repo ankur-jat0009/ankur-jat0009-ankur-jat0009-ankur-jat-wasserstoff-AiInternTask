@@ -13,5 +13,5 @@ pydantic
 python-multipart
 Pillow
 tqdm
-paddleocr==2.1.6
+paddleocr
 paddlepaddle
