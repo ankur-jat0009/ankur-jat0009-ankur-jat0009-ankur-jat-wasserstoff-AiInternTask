@@ -13,7 +13,7 @@ pydantic
 python-multipart
 Pillow
 tqdm
-setuptools>=65         # ✅ needed for modern builds
+setuptools        # ✅ needed for modern builds
 numpy==1.23.5          # ✅ works well with Python 3.10
 opencv-python-headless==4.8.0.76
 tokenizers
