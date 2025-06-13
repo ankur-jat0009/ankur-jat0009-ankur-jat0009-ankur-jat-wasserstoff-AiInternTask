@@ -1,4 +1,4 @@
-# FileBot 🤖 – Document Q&A Chatbot
+# FileBot 🤖 – Document Q\&A Chatbot
 
 ## Overview
 
@@ -8,12 +8,12 @@
 
 ## Features
 
-- **Multi-format Upload:** Supports PDF, PNG, JPG, JPEG, and direct text input.
-- **OCR Support:** Extracts text from scanned images and photos.
-- **Natural Language Q&A:** Ask questions and get answers from your documents.
-- **Citations:** Answers include document IDs and context references.
-- **Fast, User-Friendly Interface:** Simple upload and chat experience.
-- **Theme Identification:** (Optional) Summarizes common themes across documents.
+* **Multi-format Upload:** Supports PDF, PNG, JPG, JPEG, and direct text input.
+* **OCR Support:** Extracts text from scanned images and photos.
+* **Natural Language Q\&A:** Ask questions and get answers from your documents.
+* **Citations:** Answers include document IDs and context references.
+* **Fast, User-Friendly Interface:** Simple upload and chat experience.
+* **Theme Identification:** (Optional) Summarizes common themes across documents.
 
 ---
 
@@ -34,36 +34,30 @@ AIintern/
 ├── main.py
 ├── requirements.txt
 ├── README.md
-
-
 ```
 
 ---
 
 ## Setup Instructions
 
-### 1. Clone the Repository
-
-```sh
-git clone <your-repo-url>
-cd AIintern
+```bash
+# 1. Clone the Repository
+git clone https://github.com/ankur-jat0009/ankur-jat-wasserstoff-AiInternTask.git
+cd ankur-jat-wasserstoff-AiInternTask
 ```
 
-### 2. Backend Setup
-
-```sh
-cd backend
+```bash
+# 2. Setup and Run Backend
 python -m venv myenv
-myenv\Scripts\activate  # On Windows
-pip install -r requirements.txt
+myenv\Scripts\activate     # On Windows
+# Or for Mac/Linux: source myenv/bin/activate
+pip install -r ../requirements.txt
 uvicorn app.main:app --reload
 ```
 
-### 3. Frontend Setup
-
-```sh
-cd ../frontend
-pip install -r requirements.txt
+```bash
+# 3. Setup and Run Frontend
+cd frontend
 streamlit run app.py
 ```
 
@@ -80,23 +74,18 @@ streamlit run app.py
 
 ## Deployment
 
-You can deploy this project on platforms like **Render.com**, **Railway.app**, or **Hugging Face Spaces**.  
+You can deploy this project on platforms like **Render.com**, **Railway.app**, or **Hugging Face Spaces**.
 See the deployment section in this README or open an issue for help.
 
 ---
 
 ## Contribution
 
-Contributions are welcome!  
-- Fork the repo
-- Create a feature branch
-- Submit a pull request
+Contributions are welcome!
 
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+* Fork the repo
+* Create a feature branch
+* Submit a pull request
 
 ---
 
