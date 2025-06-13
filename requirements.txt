@@ -13,7 +13,8 @@ pydantic
 python-multipart
 Pillow
 tqdm
-opencv-python-headless==4.7.0.72
+setuptools
+
 
 # ✅ Safe versions to avoid Rust compilation
 paddleocr==2.6.1.3
