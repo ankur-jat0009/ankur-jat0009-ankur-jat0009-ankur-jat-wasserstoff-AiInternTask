@@ -34,3 +34,5 @@ Pillow                         # Image file processing library
 
 # Progress bar
 tqdm                           # For any progress display in loops (optional)
+paddleocr
+
