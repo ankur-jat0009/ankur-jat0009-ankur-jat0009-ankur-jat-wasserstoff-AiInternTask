@@ -9,6 +9,12 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain_core.documents import Document
 import os, uuid, shutil
+from fastapi import FastAPI
+from backend.app.api.endpoints import router
+
+app = FastAPI()
+
+app.include_router(router)
 
 # Create a router instance for FastAPI routes
 router = APIRouter()

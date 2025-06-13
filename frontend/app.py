@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Backend URL endpoint
-BACKEND_URL = "https://aiintern-oze9.onrender.com"
+BACKEND_URL = "https://fastapi-production-47ce.up.railway.app"
 
 # Page setup
 st.set_page_config(page_title="Document Chatbot", page_icon="🤖", layout="wide")
