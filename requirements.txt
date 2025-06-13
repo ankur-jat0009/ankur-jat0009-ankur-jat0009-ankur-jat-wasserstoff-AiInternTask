@@ -18,7 +18,7 @@ PyMuPDF                        # Used for rendering pages for OCR/image extracti
 
 # Vector DBs and Embedding
 faiss-cpu                      # Local vector index for semantic search
-chromadb                       # Optional (not used here unless planning RAG+db)
+
 
 # FastAPI backend
 fastapi                        # REST API framework
@@ -34,5 +34,9 @@ Pillow                         # Image file processing library
 
 # Progress bar
 tqdm                           # For any progress display in loops (optional)
-paddleocr
+paddleocr==2.6.1.3
+chromadb==0.4.24
+
+tokenizers==0.13.3
+
 
