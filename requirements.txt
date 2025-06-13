@@ -1,42 +1,16 @@
-# Frontend framework
-streamlit                      # Web app UI for chatbot interface
-
-# Google Generative AI support (Gemini models)
-google-generativeai            # Base Gemini SDK
-langchain-google-genai         # LangChain wrapper for Google GenAI
-
-# Environment variable loading
-python-dotenv                  # Load secrets from .env (like API keys)
-
-# LangChain core
-langchain                      # Orchestrates chains, prompts, models
-
-# PDF reading
-PyPDF2                         # Basic PDF parser
-pdfplumber                     # Optional high-quality PDF text extraction
-PyMuPDF                        # Used for rendering pages for OCR/image extraction
-
-# Vector DBs and Embedding
-faiss-cpu                      # Local vector index for semantic search
-
-
-# FastAPI backend
-fastapi                        # REST API framework
-uvicorn                        # ASGI server for running FastAPI
-
-# Data model handling
-pydantic                       # Schema validation for FastAPI routes
-python-multipart               # Supports file uploads in FastAPI
-
-# OCR utilities
-pytesseract                    # Tesseract OCR (optional if not using PaddleOCR)
-Pillow                         # Image file processing library
-
-# Progress bar
-tqdm                           # For any progress display in loops (optional)
+streamlit
+google-generativeai
+langchain-google-genai
+python-dotenv
+langchain
+PyPDF2
+pdfplumber
+PyMuPDF
+faiss-cpu
+fastapi
+uvicorn
+pydantic
+python-multipart
+Pillow
+tqdm
 paddleocr==2.6.1.3
-chromadb==0.4.24
-
-tokenizers==0.13.3
-
-
