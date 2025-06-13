@@ -17,8 +17,7 @@ pdfplumber                     # Optional high-quality PDF text extraction
 PyMuPDF                        # Used for rendering pages for OCR/image extraction
 
 # Vector DBs and Embedding
-faiss-cpu                      # Local vector index for semantic search
-chromadb                       # Optional (not used here unless planning RAG+db)
+faiss-cpu                      # Local vector index for semantic search                       # Optional (not used here unless planning RAG+db)
 
 # FastAPI backend
 fastapi                        # REST API framework
@@ -34,3 +33,5 @@ Pillow                         # Image file processing library
 
 # Progress bar
 tqdm                           # For any progress display in loops (optional)
+paddleocr
+paddlepaddle
