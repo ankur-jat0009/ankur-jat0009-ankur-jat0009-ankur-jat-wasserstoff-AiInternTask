@@ -5,7 +5,7 @@ python-dotenv
 langchain
 PyPDF2
 pdfplumber
-PyMuPDF>=1.22.0
+PyMuPDF
 faiss-cpu
 fastapi
 uvicorn
@@ -13,4 +13,4 @@ pydantic
 python-multipart
 Pillow
 tqdm
-paddleocr==2.6.1.3
+paddleocr
