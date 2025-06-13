@@ -1,4 +1,4 @@
-python==3.10.13
+
 streamlit
 google-generativeai
 langchain-google-genai
