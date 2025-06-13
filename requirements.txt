@@ -14,7 +14,8 @@ python-multipart
 Pillow
 tqdm
 setuptools
-
+numpy==1.23.5
+opencv-python-headless==4.8.0.76
 
 # ✅ Safe versions to avoid Rust compilation
 paddleocr==2.6.1.3
