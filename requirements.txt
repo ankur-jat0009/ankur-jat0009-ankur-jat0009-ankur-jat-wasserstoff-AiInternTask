@@ -16,5 +16,5 @@ tqdm
 
 # ✅ Safe versions to avoid Rust compilation
 paddleocr==2.6.1.3
-paddlepaddle==2.5.1
+paddlepaddle==3.0.0
 tokenizers==0.13.3
