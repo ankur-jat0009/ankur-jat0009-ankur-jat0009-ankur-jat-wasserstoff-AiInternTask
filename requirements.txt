@@ -13,7 +13,7 @@ pydantic
 python-multipart
 Pillow
 tqdm
-
+opencv
 # ✅ Safe versions to avoid Rust compilation
 paddleocr==2.6.1.3
 paddlepaddle==3.0.0
