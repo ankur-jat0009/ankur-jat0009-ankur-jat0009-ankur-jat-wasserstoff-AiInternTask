@@ -14,4 +14,4 @@ python-multipart
 Pillow
 tqdm
 paddleocr==2.1.6
-paddlepaddle==2.5.0
+paddlepaddle
