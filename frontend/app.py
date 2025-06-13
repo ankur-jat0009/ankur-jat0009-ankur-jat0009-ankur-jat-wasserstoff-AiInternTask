@@ -1,10 +1,13 @@
 import streamlit as st
 import requests
 
+# Backend URL endpoint
 BACKEND_URL = "http://localhost:8000"
 
+# Page setup
 st.set_page_config(page_title="Document Chatbot", page_icon="🤖", layout="wide")
 
+# Custom CSS for styling user and bot messages
 st.markdown(
     """
     <style>
@@ -17,16 +20,20 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# App title
 st.markdown("<h1 style='text-align: center;'>🤖FileBot🤖</h1>", unsafe_allow_html=True)
 
+# Initialize chat history & file uploader session state
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "file_uploader_key" not in st.session_state:
     st.session_state.file_uploader_key = 0
 
+# Sidebar reset control
 st.sidebar.header("Session Controls")
 if st.sidebar.button("Start New Chat"):
     try:
+        # Reset backend state
         resp = requests.post(f"{BACKEND_URL}/reset_backend/")
         if resp.status_code == 200:
             st.success("Backend reset successfully!")
@@ -34,25 +41,29 @@ if st.sidebar.button("Start New Chat"):
             st.error("Failed to reset backend.")
     except Exception as e:
         st.error(f"Error resetting backend: {e}")
+    # Reset frontend session state
     st.session_state.chat_history = []
     st.session_state.file_uploader_key += 1
     st.rerun()
 
-# --- Unified Upload Box ---
+# --- Document upload section ---
 st.header("Upload Documents or Enter Text")
 
 with st.form("upload_form", clear_on_submit=True):
+    # Upload PDFs and image files
     uploaded_files = st.file_uploader(
         "Upload PDFs or images (PDF, PNG, JPG, JPEG)", 
         accept_multiple_files=True, 
         type=["pdf", "png", "jpg", "jpeg"],
         key=st.session_state.file_uploader_key
     )
+
+    # Or paste raw text
     user_text = st.text_area("Or paste your text here to upload as a document.", height=150)
     upload_submit = st.form_submit_button("Upload")
 
+# Handle uploads
 if upload_submit:
-    # Handle file uploads
     if uploaded_files:
         for idx, file in enumerate(uploaded_files, 1):
             files = {"file": (file.name, file.getvalue(), file.type)}
@@ -70,7 +81,7 @@ if upload_submit:
             except ValueError:
                 st.error(f"❌ Invalid JSON response for {file.name}: {resp.text}")
 
-    # Handle direct text upload
+    # Upload text input
     if user_text.strip():
         resp = requests.post(f"{BACKEND_URL}/upload_text/", json={"text": user_text})
         if resp.status_code == 200:
@@ -78,16 +89,18 @@ if upload_submit:
         else:
             st.error("Failed to upload text.")
 
+# --- Chat Section ---
 st.divider()
 st.header("💬 Chat with your Documents")
 
-# Chat rendering
+# Display chat history
 for entry in st.session_state.chat_history:
     if entry["role"] == "user":
         st.markdown(f'<div class="stChatUser"><b>You:</b> {entry["content"]}</div>', unsafe_allow_html=True)
     else:
         st.markdown(f'<div class="stChatMessage"><b>Bot:</b> {entry["content"]}</div>', unsafe_allow_html=True)
 
+# Helper for expanding textarea input
 def auto_expand_text_area(label, key, placeholder):
     return st.text_area(
         label,
@@ -97,6 +110,7 @@ def auto_expand_text_area(label, key, placeholder):
         help="Type your question here"
     )
 
+# Chat input form
 with st.form(key="query_form", clear_on_submit=True):
     question = auto_expand_text_area(
         "Ask a question about your documents",
@@ -105,6 +119,7 @@ with st.form(key="query_form", clear_on_submit=True):
     )
     submit = st.form_submit_button("Send")
 
+# Submit question to backend and get answer
 if submit and question:
     st.session_state.chat_history.append({"role": "user", "content": question})
     history = st.session_state.chat_history[:-1]

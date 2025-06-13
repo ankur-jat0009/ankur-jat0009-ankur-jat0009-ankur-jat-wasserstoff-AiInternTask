@@ -1,1 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.log
+
+# Virtual environments
+venv/
+env/
+.myenv/
+.venv/
+*.env
+*.env.*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Streamlit cache
+.streamlit/
+
+# FastAPI/Project data
+backend/data/
+faiss_index/
+vector_metadata.json
+
+# Model files
+*.h5
+*.pt
+*.pth
+*.onnx
+
+# Environment variables
 .env
+
+# Misc
+*.sqlite3
+*.db
+*.bak
+*.swp
