@@ -28,13 +28,14 @@ AIintern/
 │   │   ├── services/
 │   │   └── prompts.py
 │   ├── data/
-│   ├── requirements.txt
-│   └── main.py
 ├── frontend/
 │   └── app.py
 ├── .gitignore
+├── main.py
+├── requirements.txt
 ├── README.md
-└── LICENSE
+
+
 ```
 
 ---
